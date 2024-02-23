@@ -1,0 +1,544 @@
+#ESTE SCRIPT SE TRATA DO TRATAMENTO DE UM BANCO DE DADOS QUE APRESENTA DIVERSOS PROBLEMAS DE ESTRUTURAÇÃO E PADRÃO ENTRE DIVERSOS ARQUIVOS UTILIZADOS
+#DADOS UTILIZADOS: PRECIPITAÇÃO, EVAPOTRANSPIRAÇÃO POTENCIAL E REAL
+#ÁREA DE ESTUDO: SUB-BÁCIAS DO ALTO, MÉDIO, SUBMÉDIO E BAIXO SÃO FRANCISCO POR USO E OCUPAÇÃO DO SOLO: CAATINGA, PASTAGEM, CANA DE AÇUCAR, FORMAÇÃO CAMPESTRE,SOJA E MOSAICO AGRICOLA
+
+#EVAPOTRANSPIRAÇÃO REAL E POTENCIAL
+
+#-Importando banco de dados que está dentro do meu próprio drive
+
+#1° inserindo o caminho do arquivo a uma váriavel
+
+#2° abrindo a variavel(arquivo) e dando nome a variavel
+
+#Importar bases para análise
+import pandas as pd
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+#BAIXO SÃO FRANCISCO
+path1 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/ET_BSF_Caatinga.csv'
+path2 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/ET_BSF_Pastagem.csv'
+path3 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/ET_BSF_Cana_de_açucar.csv'
+path4 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/PET_BSF_Caatinga.csv'
+path5 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/PET_BSF_Pastagem.csv'
+path6 = '/content/drive/My Drive/IC/IC23/DADOS/BSF/PET_BSF_Cana_de_açucar.csv'
+
+et_bsf_caatinga = pd.read_csv(path1)
+et_bsf_pastagem = pd.read_csv(path2)
+et_bsf_cana = pd.read_csv(path3)
+pet_bsf_caatinga = pd.read_csv(path4)
+pet_bsf_pastagem = pd.read_csv(path5)
+pet_bsf_cana = pd.read_csv(path6)
+
+#MEDIO SÃO FRANCISCO
+ET_MSF_Caatinga = '/content/drive/My Drive/IC/IC23/DADOS/MSF/ET_MSF_Caatinga.csv'
+ET_MSF_Formacao_Campestre = '/content/drive/My Drive/IC/IC23/DADOS/MSF/ET_MSF_Formação Campestre.csv'
+ET_MSF_Soja = '/content/drive/My Drive/IC/IC23/DADOS/MSF/ET_MSF_Soja.csv'
+ET_MSF_Mosaico = '/content/drive/My Drive/IC/IC23/DADOS/MSF/ET_MSF_Mosaico Agrícola.csv'
+ET_MSF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/MSF/ET_MSF_Pastagem.csv'
+PET_MSF_Caatinga = '/content/drive/My Drive/IC/IC23/DADOS/MSF/PET_MSF_Caatinga.csv'
+PET_MSF_Formacao_campestre = '/content/drive/My Drive/IC/IC23/DADOS/MSF/PET_MSF_Formação Campestre.csv'
+PET_MSF_Mosaico_agricola = '/content/drive/My Drive/IC/IC23/DADOS/MSF/PET_MSF_Mosaico Agrícola.csv'
+PET_MSF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/MSF/PET_MSF_Pastagem.csv'
+PET_MSF_Soja = '/content/drive/My Drive/IC/IC23/DADOS/MSF/PET_MSF_Soja.csv'
+
+ET_MSF_Caatinga_df = pd.read_csv(ET_MSF_Caatinga)
+ET_MSF_Formacao_Campestre_df = pd.read_csv(ET_MSF_Formacao_Campestre)
+ET_MSF_Soja_df = pd.read_csv(ET_MSF_Soja)
+ET_MSF_Mosaico_df = pd.read_csv(ET_MSF_Mosaico)
+ET_MSF_Pastagem_df = pd.read_csv(ET_MSF_Pastagem)
+PET_MSF_Caatinga_df = pd.read_csv(PET_MSF_Caatinga)
+PET_MSF_Formacao_campestre_df = pd.read_csv(PET_MSF_Formacao_campestre)
+PET_MSF_Mosaico_agricola_df = pd.read_csv(PET_MSF_Mosaico_agricola)
+PET_MSF_Pastagem_df = pd.read_csv(PET_MSF_Pastagem)
+PET_MSF_Soja_df = pd.read_csv(PET_MSF_Soja)
+
+#SUBMEDIO SÃO FRANCISCO
+ET_SMSF_Caatinga = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/ET_SMSF_Caatinga.csv'
+ET_SMSF_Formação = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/ET_SMSF_Formação Campestre.csv'
+ET_SMSF_Mosaico = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/ET_SMSF_Mosaico Agrícola.csv'
+ET_SMSF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/ET_SMSF_Pastagem.csv'
+PET_SMSF_Caatinga = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/PET_SMSF_Caatinga.csv'
+PET_SMSF_Formacao = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/PET_SMSF_Formação Campestre.csv'
+PET_SMSF_Mosaico = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/PET_SMSF_Mosaico Agrícola.csv'
+PET_SMSF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/SMSF/PET_SMSF_Pastagem.csv'
+
+ET_SMSF_Caatinga_df = pd.read_csv(ET_SMSF_Caatinga)
+ET_SMSF_Formação_df = pd.read_csv(ET_SMSF_Formação)
+ET_SMSF_Mosaico_df = pd.read_csv(ET_SMSF_Mosaico)
+ET_SMSF_Pastagem_df = pd.read_csv(ET_SMSF_Pastagem)
+PET_SMSF_Caatinga_df = pd.read_csv(PET_SMSF_Caatinga)
+PET_SMSF_Formacao_df = pd.read_csv(PET_SMSF_Formacao)
+PET_SMSF_Mosaico_df = pd.read_csv(PET_SMSF_Mosaico)
+PET_SMSF_Pastagem_df = pd.read_csv(PET_SMSF_Pastagem)
+
+#ALTO SÃO FRANCISCO
+
+PET_ASF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/ASF/PET_ASF_Pastagem.csv'
+PET_ASF_Mosaico = '/content/drive/My Drive/IC/IC23/DADOS/ASF/PET_ASF_Mosaico Agrícola.csv'
+PET_ASF_Mata = '/content/drive/My Drive/IC/IC23/DADOS/ASF/PET_ASF_Mata Atlântica.csv'
+PET_ASF_Campestre = '/content/drive/My Drive/IC/IC23/DADOS/ASF/PET_ASF_Formação Campestre.csv'
+PET_ASF_Cerrado = '/content/drive/My Drive/IC/IC23/DADOS/ASF/PET_ASF_Cerrado.csv'
+
+
+ET_ASF_Pastagem = '/content/drive/My Drive/IC/IC23/DADOS/ASF/ET_ASF_Pastagem.csv'
+ET_ASF_Mosaico = '/content/drive/My Drive/IC/IC23/DADOS/ASF/ET_ASF_Mosaico Agrícola.csv'
+ET_ASF_Mata = '/content/drive/My Drive/IC/IC23/DADOS/ASF/ET_ASF_Mata Atlântica.csv'
+ET_ASF_Campestre = '/content/drive/My Drive/IC/IC23/DADOS/ASF/ET_ASF_Formação Campestre.csv'
+ET_ASF_Cerrado = '/content/drive/My Drive/IC/IC23/DADOS/ASF/ET_ASF_Cerrado.csv'
+
+
+PET_ASF_Pastagem_df = pd.read_csv(PET_ASF_Pastagem)
+PET_ASF_Mosaico_df = pd.read_csv(PET_ASF_Mosaico)
+PET_ASF_Mata_df = pd.read_csv(PET_ASF_Mata)
+PET_ASF_Campestre_df = pd.read_csv(PET_ASF_Campestre)
+PET_ASF_Cerrado_df = pd.read_csv(PET_ASF_Cerrado)
+
+
+ET_ASF_Pastagem_df = pd.read_csv(ET_ASF_Pastagem)
+ET_ASF_Mosaico_df = pd.read_csv(ET_ASF_Mosaico)
+ET_ASF_Mata_df = pd.read_csv(ET_ASF_Mata)
+ET_ASF_Campestre_df = pd.read_csv(ET_ASF_Campestre)
+ET_ASF_Cerrado_df = pd.read_csv(ET_ASF_Cerrado)
+
+#O banco de dados existe um problema na coluna de data, está extremamente má organizada. Para isso, usei a função pd.to_datetime para indentificar que x coluna é data
+
+#Tratar formatação das datas
+
+#BAIXO SÃO FRANCISCO
+et_bsf_caatinga['system:time_start'] = pd.to_datetime(et_bsf_caatinga['system:time_start'])
+et_bsf_pastagem['system:time_start'] = pd.to_datetime(et_bsf_pastagem['system:time_start'])
+et_bsf_cana['system:time_start'] = pd.to_datetime(et_bsf_cana['system:time_start'])
+pet_bsf_caatinga['system:time_start'] = pd.to_datetime(pet_bsf_caatinga['system:time_start'])
+pet_bsf_pastagem['system:time_start'] = pd.to_datetime(pet_bsf_pastagem['system:time_start'])
+pet_bsf_cana['system:time_start'] = pd.to_datetime(pet_bsf_cana['system:time_start'])
+
+#MEDIO SÃO FRANCISCO
+ET_MSF_Caatinga_df['system:time_start'] = pd.to_datetime(ET_MSF_Caatinga_df['system:time_start'])
+ET_MSF_Formacao_Campestre_df['system:time_start'] = pd.to_datetime(ET_MSF_Formacao_Campestre_df['system:time_start'])
+ET_MSF_Soja_df['system:time_start'] = pd.to_datetime(ET_MSF_Soja_df['system:time_start'])
+ET_MSF_Mosaico_df['system:time_start'] = pd.to_datetime(ET_MSF_Mosaico_df['system:time_start'])
+ET_MSF_Pastagem_df['system:time_start'] = pd.to_datetime(ET_MSF_Pastagem_df['system:time_start'])
+
+PET_MSF_Caatinga_df['system:time_start'] = pd.to_datetime(PET_MSF_Caatinga_df['system:time_start'])
+PET_MSF_Formacao_campestre_df['system:time_start'] = pd.to_datetime(PET_MSF_Formacao_campestre_df['system:time_start'])
+PET_MSF_Mosaico_agricola_df['system:time_start'] = pd.to_datetime(PET_MSF_Mosaico_agricola_df['system:time_start'])
+PET_MSF_Pastagem_df['system:time_start'] = pd.to_datetime(PET_MSF_Pastagem_df['system:time_start'])
+PET_MSF_Soja_df['system:time_start'] = pd.to_datetime(PET_MSF_Soja_df['system:time_start'])
+
+#SUB MEDIO SÃO FRANCISCO
+ET_SMSF_Caatinga_df['system:time_start'] = pd.to_datetime(ET_SMSF_Caatinga_df['system:time_start'])
+ET_SMSF_Formação_df['system:time_start'] = pd.to_datetime(ET_SMSF_Formação_df['system:time_start'])
+ET_SMSF_Mosaico_df['system:time_start'] = pd.to_datetime(ET_SMSF_Mosaico_df['system:time_start'])
+ET_SMSF_Pastagem_df['system:time_start'] = pd.to_datetime(ET_SMSF_Pastagem_df['system:time_start'])
+
+PET_SMSF_Caatinga_df['system:time_start'] = pd.to_datetime(PET_SMSF_Caatinga_df['system:time_start'])
+PET_SMSF_Formacao_df['system:time_start'] = pd.to_datetime(PET_SMSF_Formacao_df['system:time_start'])
+PET_SMSF_Mosaico_df['system:time_start'] = pd.to_datetime(PET_SMSF_Mosaico_df['system:time_start'])
+PET_SMSF_Pastagem_df['system:time_start'] = pd.to_datetime(PET_SMSF_Pastagem_df['system:time_start'])
+
+#ALTO SÃO FRANCISCO
+
+PET_ASF_Pastagem_df['system:time_start'] = pd.to_datetime(PET_ASF_Pastagem_df['system:time_start'])
+PET_ASF_Mosaico_df['system:time_start'] = pd.to_datetime(PET_ASF_Mosaico_df['system:time_start'])
+PET_ASF_Mata_df['system:time_start'] = pd.to_datetime(PET_ASF_Mata_df['system:time_start'])
+PET_ASF_Campestre_df['system:time_start'] = pd.to_datetime(PET_ASF_Campestre_df['system:time_start'])
+PET_ASF_Cerrado_df['system:time_start'] = pd.to_datetime(PET_ASF_Cerrado_df['system:time_start'])
+
+ET_ASF_Pastagem_df['system:time_start'] = pd.to_datetime(ET_ASF_Pastagem_df['system:time_start'])
+ET_ASF_Mosaico_df['system:time_start'] = pd.to_datetime(ET_ASF_Mosaico_df['system:time_start'])
+ET_ASF_Mata_df['system:time_start'] = pd.to_datetime(ET_ASF_Mata_df['system:time_start'])
+ET_ASF_Campestre_df['system:time_start'] = pd.to_datetime(ET_ASF_Campestre_df['system:time_start'])
+ET_ASF_Cerrado_df['system:time_start'] = pd.to_datetime(ET_ASF_Cerrado_df['system:time_start'])
+
+#o padrão do CRU é: observação 8 em 8 dias, porém, para estre trabalho é necessário dados mensais, para isso, foi organizado que grupos de 4 determine um mÊs e já classifique-o, paramentro separação sendo ="," frequencial Mensal = "M"
+
+#Média mensal de ETR e ETP
+
+#BAIXO SÃO FRANCISCO
+et_bsf_caatinga.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("et_bsf_caatinga.csv", sep=',', encoding='utf-8')
+et_bsf_pastagem.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("et_bsf_pastagem.csv", sep=',', encoding='utf-8')
+et_bsf_cana.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("et_bsf_cana.csv", sep=',', encoding='utf-8')
+pet_bsf_caatinga.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("pet_bsf_caatinga.csv", sep=',', encoding='utf-8')
+pet_bsf_pastagem.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("pet_bsf_pastagem.csv", sep=',', encoding='utf-8')
+pet_bsf_cana.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("pet_bsf_cana.csv", sep=',', encoding='utf-8')
+
+#MEDIO SÃO FRANCISCO
+ET_MSF_Caatinga_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_MSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Formacao_Campestre_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_MSF_Formacao_Campestre_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Soja_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_MSF_Soja_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Mosaico_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_MSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_MSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+PET_MSF_Caatinga_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_MSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Formacao_campestre_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_MSF_Formacao_campestre_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Mosaico_agricola_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_MSF_Mosaico_agricola_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_MSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Soja_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_MSF_Soja_df.csv", sep=',', encoding='utf-8')
+
+#SUBMEDIO SÃO FRANCISCO
+ET_SMSF_Caatinga_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_SMSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Formação_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_SMSF_Formação_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Mosaico_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_SMSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_SMSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+PET_SMSF_Caatinga_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_SMSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Formacao_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_SMSF_Formacao_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Mosaico_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_SMSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_SMSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+#ALTO SÃO FRANCISCO
+PET_ASF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_ASF_Pastagem_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Mosaico_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_ASF_Mosaico_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Mata_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_ASF_Mata_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Campestre_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_ASF_Campestre_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Cerrado_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("PET_ASF_Cerrado_df.csv", sep=',', encoding='utf-8')
+
+ET_ASF_Pastagem_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_ASF_Pastagem_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Mosaico_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_ASF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Mata_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_ASF_Mata_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Campestre_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_ASF_Campestre_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Cerrado_df.groupby(pd.Grouper(key="system:time_start", freq="1M")).mean().to_csv("ET_ASF_Cerrado_df.csv", sep=',', encoding='utf-8')
+
+#PRECIPITAÇÃO
+#INSERINDO DADOS DE PRECIPITAÇÃO ARQUIVADOS DO PROPRIO DRIVE, CRIANDO HEADER E REMOVENDO O HEADER INCONSISTENTE QUE CONSTAVA NO ARQUIVO
+#(UMA DAS COLUNAS NÃO TINHA IDENTIFICADOR)
+
+PREC_ASF = '/content/drive/My Drive/IC/IC23/DADOS/PREC/asf_mean_Prec_Samuel.csv'
+PREC_ASF_df = pd.read_csv(PREC_ASF,sep=";", names=['system:time_start', 'value'])
+PREC_ASF_df = PREC_ASF_df.drop([0])
+
+PREC_BSF = '/content/drive/My Drive/IC/IC23/DADOS/PREC/bsf_mean_Prec_Samuel.csv'
+PREC_BSF_df = pd.read_csv(PREC_BSF,sep=";", names=['system:time_start', 'value'])
+PREC_BSF_df = PREC_BSF_df.drop([0])
+
+PREC_MSF = '/content/drive/My Drive/IC/IC23/DADOS/PREC/msf_mean_Prec_Samuel.csv'
+PREC_MSF_df = pd.read_csv(PREC_MSF,sep=";", names=['system:time_start', 'value'])
+PREC_MSF_df = PREC_MSF_df.drop([0])
+
+PREC_SMSF = '/content/drive/My Drive/IC/IC23/DADOS/PREC/smsf_mean_Prec_Samuel.csv'
+PREC_SMSF_df = pd.read_csv(PREC_SMSF,sep=";", names=['system:time_start', 'value'])
+PREC_SMSF_df = PREC_SMSF_df.drop([0])
+
+#a Coluna x é a data e não existia nenhum titulo para os valores, outra problemática é: antes das datas eles vinham como o seguinte padrão X01/02/23 X05/03/26, então os scripts seguintes é para substituir na coluna x onde há X será trocado por "" (nada).
+
+PREC_ASF_df['system:time_start'] = PREC_ASF_df['system:time_start'].astype(str).str.replace('X','')
+PREC_BSF_df ['system:time_start'] = PREC_BSF_df ['system:time_start'].astype(str).str.replace('X','')
+PREC_MSF_df['system:time_start'] = PREC_MSF_df['system:time_start'].astype(str).str.replace('X','')
+PREC_SMSF_df['system:time_start'] = PREC_SMSF_df['system:time_start'].astype(str).str.replace('X','')
+#type(PREC_ASF_df['x'])
+
+#outra problematicas nos dados do CRU, é que a coluna data ela está inserida em formato texto, então, estou dizendo que a coluna x será transformada em data com a função pd.to_datetime
+#coluna x está em formato texto, precisando transformar em data
+PREC_ASF_df['system:time_start'] = pd.to_datetime(PREC_ASF_df['system:time_start'])
+PREC_BSF_df ['system:time_start'] = pd.to_datetime(PREC_BSF_df['system:time_start'])
+PREC_MSF_df['system:time_start'] = pd.to_datetime(PREC_MSF_df['system:time_start'])
+PREC_SMSF_df['system:time_start'] = pd.to_datetime(PREC_SMSF_df['system:time_start'])
+
+#Iterando cada linha do dataframe e verificando se o mês e ano do primeiro dataframe é
+#igual ao mes e ano da precipitação para calcular a petp (média de evapotranspiração dividida pela precipitação)
+
+####### ALTO SÃO FRANCISCO ##########
+#ASF PET/P
+
+for index, row in PET_ASF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Pastagem_df.at[index, 'petp'] = row['Pastagem']/row_prec['value']
+
+for index, row in PET_ASF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Mosaico_df.at[index, 'petp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in PET_ASF_Mata_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Mata_df.at[index, 'petp'] = row['Mata Atlântica']/row_prec['value']
+
+for index, row in PET_ASF_Campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Campestre_df.at[index, 'petp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in PET_ASF_Cerrado_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Cerrado_df.at[index, 'petp'] = row['Cerrado']/row_prec['value']
+
+#ASF ET/P
+
+for index, row in ET_ASF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Pastagem_df.at[index, 'etp'] = row['Pastagem']/row_prec['value']
+
+for index, row in ET_ASF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Mosaico_df.at[index, 'etp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in ET_ASF_Mata_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Mata_df.at[index, 'etp'] = row['Mata Atlântica']/row_prec['value']
+
+for index, row in ET_ASF_Campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Campestre_df.at[index, 'etp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in ET_ASF_Cerrado_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Cerrado_df.at[index, 'etp'] = row['Cerrado']/row_prec['value']
+
+####### MEDIO SÃO FRNACISCO ##########
+
+#MSF ET/P
+
+for index, row in ET_MSF_Caatinga_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_MSF_Caatinga_df.at[index, 'etp'] = row['Caatinga']/row_prec['value']
+
+for index, row in ET_MSF_Formacao_Campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_MSF_Formacao_Campestre_df.at[index, 'etp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in ET_MSF_Soja_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_MSF_Soja_df.at[index, 'etp'] = row['Soja']/row_prec['value']
+
+for index, row in ET_MSF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_MSF_Mosaico_df.at[index, 'etp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in ET_MSF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_MSF_Pastagem_df.at[index, 'etp'] = row['Pastagem']/row_prec['value']
+
+#MSF PET/P
+
+for index, row in PET_MSF_Caatinga_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_MSF_Caatinga_df.at[index, 'petp'] = row['Caatinga']/row_prec['value']
+
+for index, row in PET_MSF_Formacao_campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_MSF_Formacao_campestre_df.at[index, 'petp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in PET_MSF_Soja_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_MSF_Soja_df.at[index, 'petp'] = row['Soja']/row_prec['value']
+
+for index, row in PET_MSF_Mosaico_agricola_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_MSF_Mosaico_agricola_df.at[index, 'petp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in PET_MSF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_MSF_Pastagem_df.at[index, 'petp'] = row['Pastagem']/row_prec['value']
+
+####### SUBMEDIO SÃO FRNACISCO ##########
+
+#SMSF ET/P
+
+for index, row in ET_SMSF_Caatinga_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_SMSF_Caatinga_df.at[index, 'etp'] = row['Caatinga']/row_prec['value']
+
+for index, row in ET_SMSF_Formação_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_SMSF_Formação_df.at[index, 'etp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in ET_SMSF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_SMSF_Mosaico_df.at[index, 'etp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in ET_SMSF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_SMSF_Pastagem_df.at[index, 'etp'] = row['Pastagem']/row_prec['value']
+
+#SMSF PET/P
+
+for index, row in PET_SMSF_Caatinga_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_SMSF_Caatinga_df.at[index, 'petp'] = row['Caatinga']/row_prec['value']
+
+for index, row in PET_SMSF_Formacao_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_SMSF_Formacao_df.at[index, 'petp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in PET_SMSF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_SMSF_Mosaico_df.at[index, 'petp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in PET_SMSF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_SMSF_Pastagem_df.at[index, 'petp'] = row['Pastagem']/row_prec['value']
+
+####### ALTO SÃO FRNACISCO ##########
+
+#ASF ET/P
+
+for index, row in ET_ASF_Cerrado_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Cerrado_df.at[index, 'petp'] = row['Cerrado']/row_prec['value']
+
+for index, row in ET_ASF_Campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Campestre_df.at[index, 'petp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in ET_ASF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Mosaico_df.at[index, 'petp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in ET_ASF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Pastagem_df.at[index, 'petp'] = row['Pastagem']/row_prec['value']
+
+for index, row in ET_ASF_Mata_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      ET_ASF_Mata_df.at[index, 'petp'] = row['Mata Atlântica']/row_prec['value']
+
+
+#ASF PET/P
+
+for index, row in PET_ASF_Cerrado_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Cerrado_df.at[index, 'petp'] = row['Cerrado']/row_prec['value']
+
+for index, row in PET_ASF_Campestre_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Campestre_df.at[index, 'petp'] = row['Formação Campestre']/row_prec['value']
+
+for index, row in PET_ASF_Mosaico_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Mosaico_df.at[index, 'petp'] = row['Mosaico Agrícola']/row_prec['value']
+
+for index, row in PET_ASF_Pastagem_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Pastagem_df.at[index, 'petp'] = row['Pastagem']/row_prec['value']
+
+for index, row in PET_ASF_Mata_df.iterrows():
+  for index_prec, row_prec in PREC_ASF_df.iterrows():
+    if row['system:time_start'].month == row_prec['system:time_start'].month and row['system:time_start'].year == row_prec['system:time_start'].year:
+      PET_ASF_Mata_df.at[index, 'petp'] = row['Mata Atlântica']/row_prec['value']
+
+#BAIXO SÃO FRANCISCO
+et_bsf_caatinga.to_csv("et_bsf_caatinga.csv", sep=',', encoding='utf-8')
+et_bsf_pastagem.to_csv("et_bsf_pastagem.csv", sep=',', encoding='utf-8')
+et_bsf_cana.to_csv("et_bsf_cana.csv", sep=',', encoding='utf-8')
+pet_bsf_caatinga.to_csv("pet_bsf_caatinga.csv", sep=',', encoding='utf-8')
+pet_bsf_pastagem.to_csv("pet_bsf_pastagem.csv", sep=',', encoding='utf-8')
+pet_bsf_cana.to_csv("pet_bsf_cana.csv", sep=',', encoding='utf-8')
+
+#MEDIO SÃO FRANCISCO
+ET_MSF_Caatinga_df.to_csv("ET_MSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Formacao_Campestre_df.to_csv("ET_MSF_Formacao_Campestre_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Soja_df.to_csv("ET_MSF_Soja_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Mosaico_df.to_csv("ET_MSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_MSF_Pastagem_df.to_csv("ET_MSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+PET_MSF_Caatinga_df.to_csv("PET_MSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Formacao_campestre_df.to_csv("PET_MSF_Formacao_campestre_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Mosaico_agricola_df.to_csv("PET_MSF_Mosaico_agricola_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Pastagem_df.to_csv("PET_MSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+PET_MSF_Soja_df.to_csv("PET_MSF_Soja_df.csv", sep=',', encoding='utf-8')
+
+#SUBMEDIO SÃO FRANCISCO
+ET_SMSF_Caatinga_df.to_csv("ET_SMSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Formação_df.to_csv("ET_SMSF_Formação_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Mosaico_df.to_csv("ET_SMSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_SMSF_Pastagem_df.to_csv("ET_SMSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+PET_SMSF_Caatinga_df.to_csv("PET_SMSF_Caatinga_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Formacao_df.to_csv("PET_SMSF_Formacao_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Mosaico_df.to_csv("PET_SMSF_Mosaico_df.csv", sep=',', encoding='utf-8')
+PET_SMSF_Pastagem_df.to_csv("PET_SMSF_Pastagem_df.csv", sep=',', encoding='utf-8')
+
+#ALTO SÃO FRANCISCO
+PET_ASF_Pastagem_df.to_csv("PET_ASF_Pastagem_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Mosaico_df.to_csv("PET_ASF_Mosaico_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Mata_df.to_csv("PET_ASF_Mata_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Campestre_df.to_csv("PET_ASF_Campestre_df.csv", sep=',', encoding='utf-8')
+PET_ASF_Cerrado_df.to_csv("PET_ASF_Cerrado_df.csv", sep=',', encoding='utf-8')
+
+ET_ASF_Pastagem_df.to_csv("ET_ASF_Pastagem_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Mosaico_df.to_csv("ET_ASF_Mosaico_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Mata_df.to_csv("ET_ASF_Mata_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Campestre_df.to_csv("ET_ASF_Campestre_df.csv", sep=',', encoding='utf-8')
+ET_ASF_Cerrado_df.to_csv("ET_ASF_Cerrado_df.csv", sep=',', encoding='utf-8')
+
+#EXPORTANDO DADOS
+from google.colab import files
+
+#BAIXO SÃO FRANCISCO
+files.download("et_bsf_caatinga.csv")
+files.download("et_bsf_pastagem.csv")
+files.download("et_bsf_cana.csv")
+files.download("pet_bsf_caatinga.csv")
+files.download("pet_bsf_pastagem.csv")
+files.download("pet_bsf_cana.csv")
+
+#MEDIO SÃO FRANCISCO
+files.download("ET_MSF_Caatinga_df.csv")
+files.download("ET_MSF_Formacao_Campestre_df.csv")
+files.download("ET_MSF_Soja_df.csv")
+files.download("ET_MSF_Mosaico_df.csv")
+files.download("ET_MSF_Pastagem_df.csv")
+files.download("PET_MSF_Caatinga_df.csv")
+files.download("PET_MSF_Formacao_campestre_df.csv")
+files.download("PET_MSF_Mosaico_agricola_df.csv")
+files.download("PET_MSF_Pastagem_df.csv")
+files.download("PET_MSF_Soja_df.csv")
+
+#SUBMEDIO SÃO FRANCISCO
+files.download("ET_SMSF_Caatinga_df.csv")
+files.download("ET_SMSF_Formação_df.csv")
+files.download("ET_SMSF_Mosaico_df.csv")
+files.download("ET_SMSF_Pastagem_df.csv")
+files.download("PET_SMSF_Caatinga_df.csv")
+files.download("PET_SMSF_Formacao_df.csv")
+files.download("PET_SMSF_Mosaico_df.csv")
+files.download("PET_SMSF_Pastagem_df.csv")
+
+#ALTO SÃO FRANCISCO
+files.download("PET_ASF_Pastagem_df.csv")
+files.download("PET_ASF_Mosaico_df.csv")
+files.download("PET_ASF_Mata_df.csv")
+files.download("PET_ASF_Campestre_df.csv")
+files.download("PET_ASF_Cerrado_df.csv")
+files.download("ET_ASF_Pastagem_df.csv")
+files.download("ET_ASF_Mosaico_df.csv")
+files.download("ET_ASF_Mata_df.csv")
+files.download("ET_ASF_Campestre_df.csv")
+files.download("ET_ASF_Cerrado_df.csv")
